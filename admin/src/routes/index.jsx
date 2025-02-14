@@ -6,6 +6,7 @@ import Sidebar from '../components/Sidebar'
 import MemberTable from '../components/MemberTable'
 import ForgotPassword from '../pages/ForgotPassword'
 import AddCategory from '../components/AddCategory'
+import ContactFormDetail from '../components/ContactFormDetails'
 
 
 export const router = createBrowserRouter([
@@ -33,7 +34,10 @@ export const router = createBrowserRouter([
             path: 'add-category',
             element: <AddCategory/>,
           },
-       
+          {
+            path: 'contact-form-list',
+            element: <ContactFormDetail/>,
+          },
           
         ],
       },

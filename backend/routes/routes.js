@@ -8,6 +8,7 @@ const { adminLogin } = require('../controllers/adminController');
 
 // Client routes
 const userController = require('../controllers/clientControllers/userController');
+const contactController = require("../controllers/contactController");
 
 const router = express.Router();
 
@@ -32,5 +33,16 @@ router.post('/loginAdmin', adminLogin);
 router.post('/register', userController.registerUser);
 router.post('/login', userController.loginUser);
 router.get('/profile', userController.getProfile);
+
+
+
+//Contact Routes
+router.post("/createContact", contactController.createContact);
+router.get("/getContacts", contactController.getContacts);
+router.get("/getContactById/:id", contactController.getContactById);
+router.put("/updateContact/:id", contactController.updateContact);
+router.delete("/deleteContact/:id", contactController.deleteContact);
+
+
 
 module.exports = router;

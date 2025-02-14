@@ -19,7 +19,7 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <main className=" bg-gray-100">
+    <main className="">
       <Navbar/>
       <Outlet />
       <Footer/>
