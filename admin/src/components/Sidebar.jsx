@@ -51,6 +51,13 @@ const Sidebar = () => {
             <TbLayoutDashboardFilled className="mr-2" size={20} />
             {!isCollapsed && <span>Dashboard</span>}
           </Link>
+          <Link
+            to="UploadProduct"
+            className="flex items-center px-4 py-3 hover:bg-teal-500 hover:text-white rounded-lg transition-colors duration-300"
+          >
+            <TbLayoutDashboardFilled className="mr-2" size={20} />
+            {!isCollapsed && <span>Upload Product</span>}
+          </Link>
 
           <Link
             to="add-category"

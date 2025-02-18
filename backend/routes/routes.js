@@ -7,9 +7,11 @@ const { sendCode, verifyCode } = require("../controllers/emailAuthController");
 const categoryController = require('../controllers/categoryController');
 const { adminLogin } = require('../controllers/adminController');
 
+
 // Client routes
 const userController = require('../controllers/clientControllers/userController');
 const contactController = require("../controllers/contactController");
+const { uploadProduct, uploadMiddleware } = require('../controllers/ProductController');
 
 const router = express.Router();
 
@@ -29,6 +31,7 @@ router.get("/getTotalCategories/total", categoryController.getTotalCategories);
 
 // Routes for Admin Login
 router.post('/loginAdmin', adminLogin);
+router.post('/uploadProduct', uploadMiddleware , uploadProduct);
 
 //Routes for Signin,login
 router.post('/register', userController.registerUser);
