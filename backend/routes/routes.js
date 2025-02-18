@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 // const {protect} =require('../middleware/authMiddleware');
+const { sendCode, verifyCode } = require("../controllers/emailAuthController");
 
 // Admin routes
 const categoryController = require('../controllers/categoryController');
@@ -43,6 +44,7 @@ router.get("/getContactById/:id", contactController.getContactById);
 router.put("/updateContact/:id", contactController.updateContact);
 router.delete("/deleteContact/:id", contactController.deleteContact);
 
-
+router.post("/send-code", sendCode);    
+router.post("/verify-code", verifyCode); 
 
 module.exports = router;
