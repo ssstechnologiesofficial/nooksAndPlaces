@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import UploadedProductsList from './UploadedProductsList';
 
 const UploadProduct = () => {
   const [showForm, setShowForm] = useState(false);
@@ -11,18 +12,23 @@ const UploadProduct = () => {
     img: null,
     images: [],
   });
+  const [imagePreviews, setImagePreviews] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSingleImageChange = (e) => {
-    setFormData((prev) => ({ ...prev, img: e.target.files[0] }));
-  };
-
   const handleMultipleImagesChange = (e) => {
-    setFormData((prev) => ({ ...prev, images: Array.from(e.target.files) }));
+    const files = Array.from(e.target.files);
+
+    setFormData((prev) => ({
+      ...prev,
+      images: [...prev.images, ...files],
+    }));
+
+    const previews = files.map((file) => URL.createObjectURL(file));
+    setImagePreviews((prev) => [...prev, ...previews]);
   };
 
   const handleSubmit = async (e) => {
@@ -32,7 +38,6 @@ const UploadProduct = () => {
     data.append('mrp', formData.mrp);
     data.append('sellingPrice', formData.sellingPrice);
     data.append('description', formData.description);
-    data.append('img', formData.img);
     formData.images.forEach((image) => {
       data.append('images', image);
     });
@@ -54,6 +59,7 @@ const UploadProduct = () => {
         img: null,
         images: [],
       });
+      setImagePreviews([]);
     } catch (error) {
       console.error(error);
       alert('Failed to upload product');
@@ -61,11 +67,12 @@ const UploadProduct = () => {
   };
 
   return (
-    <div className="bg-[#353F4E] p-4 m-0 rounded-md">
+    <>
+    <div className="bg-[#919DA6] p-4 m-0 rounded-md">
       <button
-        className="text-white text-left bg-green-900 p-1 shadow-xl rounded-md"
+        className="text-white text-left bg-gray-700 p-2 shadow-xl rounded-md"
         onClick={() => setShowForm(!showForm)}
-      >
+        >
         Upload Product
       </button>
 
@@ -80,7 +87,7 @@ const UploadProduct = () => {
               onChange={handleChange}
               className="border p-1 w-full"
               required
-            />
+              />
           </div>
 
           <div className="mb-2">
@@ -92,7 +99,7 @@ const UploadProduct = () => {
               onChange={handleChange}
               className="border p-1 w-full"
               required
-            />
+              />
           </div>
 
           <div className="mb-2">
@@ -104,7 +111,7 @@ const UploadProduct = () => {
               onChange={handleChange}
               className="border p-1 w-full"
               required
-            />
+              />
           </div>
 
           <div className="mb-2">
@@ -115,17 +122,23 @@ const UploadProduct = () => {
               onChange={handleChange}
               className="border p-1 w-full"
               required
-            ></textarea>
+              ></textarea>
           </div>
-
-          {/* <div className="mb-2">
-            <label>Upload Image (Single)</label>
-            <input type="file" onChange={handleSingleImageChange} required />
-          </div> */}
 
           <div className="mb-2">
             <label>Upload Multiple Images</label>
             <input type="file" multiple onChange={handleMultipleImagesChange} />
+          </div>
+
+          <div className="mb-2 flex flex-wrap">
+            {imagePreviews.map((preview, index) => (
+              <img
+              key={index}
+              src={preview}
+              alt={`Preview ${index}`}
+              className="w-16 h-16 object-cover m-1 border"
+              />
+            ))}
           </div>
 
           <button type="submit" className="bg-blue-500 text-white p-1 rounded-md">
@@ -133,7 +146,11 @@ const UploadProduct = () => {
           </button>
         </form>
       )}
+
     </div>
+
+    <UploadedProductsList/>
+      </>
   );
 };
 
