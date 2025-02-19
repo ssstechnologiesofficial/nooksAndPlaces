@@ -7,6 +7,7 @@ import MemberTable from '../components/MemberTable'
 import ForgotPassword from '../pages/ForgotPassword'
 import AddCategory from '../components/AddCategory'
 import ContactFormDetail from '../components/ContactFormDetails'
+import UploadProduct from '../components/UploadProduct'
 
 
 export const router = createBrowserRouter([
@@ -37,6 +38,10 @@ export const router = createBrowserRouter([
           {
             path: 'contact-form-list',
             element: <ContactFormDetail/>,
+          },
+          {
+            path: 'UploadProduct',
+            element: <UploadProduct/>,
           },
           
         ],

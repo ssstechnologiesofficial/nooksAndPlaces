@@ -8,6 +8,7 @@ import ContactPage from '../components/ContactPage';
 import PrivacyPolicy from '../components/PrivacyPolicy';
 
 
+
 export const router = createBrowserRouter([
   {
     path: '/',
