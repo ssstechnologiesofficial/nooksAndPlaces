@@ -1,28 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ShopFilterSection from "./ShopFilterSection";
-import pot1 from '../assets/pot1.png';
-import pot2 from '../assets/pot2.png';
-import pot3 from '../assets/pot3.png';
-import pot4 from '../assets/pot4.png';
-import pot5 from '../assets/pot5.png';
-import pot6 from '../assets/pot6.png';
-import pot7 from '../assets/pot7.png';
-import pot8 from '../assets/pot8.png';
-
-const products = [
-  { image: pot1, name: "Elegant Ceramic Pot", originalPrice: 4000, sellingPrice: 2500 },
-  { image: pot2, name: "Minimalist Plant Holder", originalPrice: 3500, sellingPrice: 2000 },
-  { image: pot3, name: "Rustic Clay Vase", originalPrice: 5000, sellingPrice: 3000 },
-  { image: pot4, name: "Modern White Pot", originalPrice: 4500, sellingPrice: 2800 },
-  { image: pot5, name: "Classic Terracotta Pot", originalPrice: 3800, sellingPrice: 2200 },
-  { image: pot6, name: "Handcrafted Garden Pot", originalPrice: 5500, sellingPrice: 3500 },
-  { image: pot7, name: "Decorative Indoor Pot", originalPrice: 6000, sellingPrice: 4000 },
-  { image: pot8, name: "Vintage Styled Pot", originalPrice: 4200, sellingPrice: 2600 }
-];
 
 const Shop = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [products, setProducts] = useState([]);  // State to store fetched products
+  const [loading, setLoading] = useState(true);  // State for loading status
+  const [error, setError] = useState(null);      // State to handle any error
 
+  // Fetch products from the API when the component mounts
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/getproducts'); // Replace with your API URL
+        if (!response.ok) {
+          throw new Error("Failed to fetch products");
+        }
+        const data = await response.json();
+        setProducts(data);  // Set fetched products to state
+      } catch (error) {
+        setError(error.message);  // Handle error
+      } finally {
+        setLoading(false);  // Set loading to false after the fetch is done
+      }
+    };
+
+    fetchProducts();
+  }, []);  // Empty dependency array to run the effect only once after the initial render
+
+  if (loading) {
+    return <div>Loading...</div>; // You can replace this with a loading spinner or message
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;  // Display error message if there is an error
+  }
+  const BASE_URL = 'http://localhost:5000/';
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="container mx-auto p-4 md:p-6 flex flex-col md:flex-row gap-6">
@@ -71,15 +83,19 @@ const Shop = () => {
                 <span className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
                   Sale
                 </span>
+                
+                {/* Debugging: Check the product data */}
+                {console.log(product)} 
+
                 <img
-                  src={product.image}
-                  alt={product.name}
+                 src={`${BASE_URL}${product.images[0]}`}// Check if image exists, else use default
+                  alt={product.productName}
                   className="w-full h-80 object-cover"
                 />
                 <div className="text-center mt-2">
-                  <h3 className="text-lg font-semibold">{product.name}</h3>
+                  <h3 className="text-lg font-semibold">{product.productName}</h3>
                   <div className="flex justify-center gap-3">
-                    <div className="text-gray-500 line-through">₹{product.originalPrice}</div>
+                    <div className="text-gray-500 line-through">₹{product.mrp}</div>
                     <div className="text-red-500">₹{product.sellingPrice}</div>
                   </div>
                 </div>

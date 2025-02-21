@@ -9,8 +9,13 @@ const UploadProduct = () => {
     mrp: '',
     sellingPrice: '',
     description: '',
-    img: null,
+    size: '',
+    vendor: '',
+    productType: '',
     images: [],
+    addToCart: false,
+    wishlist: false,
+    availability: true,
   });
   const [imagePreviews, setImagePreviews] = useState([]);
 
@@ -38,6 +43,12 @@ const UploadProduct = () => {
     data.append('mrp', formData.mrp);
     data.append('sellingPrice', formData.sellingPrice);
     data.append('description', formData.description);
+    data.append('size', formData.size);
+    data.append('vendor', formData.vendor);
+    data.append('productType', formData.productType);
+    data.append('addToCart', formData.addToCart);
+    data.append('wishlist', formData.wishlist);
+    data.append('availability', formData.availability);
     formData.images.forEach((image) => {
       data.append('images', image);
     });
@@ -56,8 +67,13 @@ const UploadProduct = () => {
         mrp: '',
         sellingPrice: '',
         description: '',
-        img: null,
+        size: '',
+        vendor: '',
+        productType: '',
         images: [],
+        addToCart: false,
+        wishlist: false,
+        availability: true,
       });
       setImagePreviews([]);
     } catch (error) {
@@ -68,89 +84,151 @@ const UploadProduct = () => {
 
   return (
     <>
-    <div className="bg-[#919DA6] p-4 m-0 rounded-md">
-      <button
-        className="text-white text-left bg-gray-700 p-2 shadow-xl rounded-md"
-        onClick={() => setShowForm(!showForm)}
+      <div className="bg-[#919DA6] p-4 m-0 rounded-md">
+        <button
+          className="text-white text-left bg-gray-700 p-2 shadow-xl rounded-md"
+          onClick={() => setShowForm(!showForm)}
         >
-        Upload Product
-      </button>
+          Upload Product
+        </button>
 
-      {showForm && (
-        <form className="bg-white p-4 rounded-md mt-4" onSubmit={handleSubmit}>
-          <div className="mb-2">
-            <label>Product Name</label>
-            <input
-              type="text"
-              name="productName"
-              value={formData.productName}
-              onChange={handleChange}
-              className="border p-1 w-full"
-              required
+        {showForm && (
+          <form className="bg-white p-4 rounded-md mt-4" onSubmit={handleSubmit}>
+            <div className="mb-2">
+              <label>Product Name</label>
+              <input
+                type="text"
+                name="productName"
+                value={formData.productName}
+                onChange={handleChange}
+                className="border p-2 w-full rounded-md"
+                required
               />
-          </div>
+            </div>
 
-          <div className="mb-2">
-            <label>MRP</label>
-            <input
-              type="number"
-              name="mrp"
-              value={formData.mrp}
-              onChange={handleChange}
-              className="border p-1 w-full"
-              required
+            <div className="mb-2">
+              <label>MRP</label>
+              <input
+                type="number"
+                name="mrp"
+                value={formData.mrp}
+                onChange={handleChange}
+                className="border p-2 w-full rounded-md"
+                required
               />
-          </div>
+            </div>
 
-          <div className="mb-2">
-            <label>Selling Price</label>
-            <input
-              type="number"
-              name="sellingPrice"
-              value={formData.sellingPrice}
-              onChange={handleChange}
-              className="border p-1 w-full"
-              required
+            <div className="mb-2">
+              <label>Selling Price</label>
+              <input
+                type="number"
+                name="sellingPrice"
+                value={formData.sellingPrice}
+                onChange={handleChange}
+                className="border p-2 w-full rounded-md"
+                required
               />
-          </div>
+            </div>
 
-          <div className="mb-2">
-            <label>Description</label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              className="border p-1 w-full"
-              required
-              ></textarea>
-          </div>
-
-          <div className="mb-2">
-            <label>Upload Multiple Images</label>
-            <input type="file" multiple onChange={handleMultipleImagesChange} />
-          </div>
-
-          <div className="mb-2 flex flex-wrap">
-            {imagePreviews.map((preview, index) => (
-              <img
-              key={index}
-              src={preview}
-              alt={`Preview ${index}`}
-              className="w-16 h-16 object-cover m-1 border"
+            <div className="mb-2">
+              <label>Description</label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                className="border p-2 w-full rounded-md"
+                required
               />
-            ))}
-          </div>
+            </div>
 
-          <button type="submit" className="bg-blue-500 text-white p-1 rounded-md">
-            Submit
-          </button>
-        </form>
-      )}
+            <div className="mb-2">
+              <label>Size</label>
+              <input
+                type="text"
+                name="size"
+                value={formData.size}
+                onChange={handleChange}
+                className="border p-2 w-full rounded-md"
+                placeholder="Comma-separated sizes (e.g., S,M,L)"
+              />
+            </div>
 
-    </div>
+            <div className="mb-2">
+              <label>Vendor</label>
+              <input
+                type="text"
+                name="vendor"
+                value={formData.vendor}
+                onChange={handleChange}
+                className="border p-2 w-full rounded-md"
+                required
+              />
+            </div>
 
-    <UploadedProductsList/>
-      </>
+            <div className="mb-2">
+              <label>Product Type</label>
+              <input
+                type="text"
+                name="productType"
+                value={formData.productType}
+                onChange={handleChange}
+                className="border p-2 w-full rounded-md"
+                required
+              />
+            </div>
+
+            <div className="mb-2">
+              <label>Upload Multiple Images</label>
+              <input type="file" multiple onChange={handleMultipleImagesChange} className="border p-2 w-full rounded-md" />
+            </div>
+
+            <div className="mb-2 flex flex-wrap">
+              {imagePreviews.map((preview, index) => (
+                <img
+                  key={index}
+                  src={preview}
+                  alt={`Preview ${index}`}
+                  className="w-16 h-16 object-cover m-1 border rounded-md"
+                />
+              ))}
+            </div>
+
+            <div className="mb-2">
+              <label>Add to Cart</label>
+              <input
+                type="checkbox"
+                checked={formData.addToCart}
+                onChange={() => setFormData({ ...formData, addToCart: !formData.addToCart })}
+              />
+            </div>
+
+            <div className="mb-2">
+              <label>Wishlist</label>
+              <input
+                type="checkbox"
+                checked={formData.wishlist}
+                onChange={() => setFormData({ ...formData, wishlist: !formData.wishlist })}
+              />
+            </div>
+
+            <div className="mb-2">
+              <label>Availability</label>
+              <input
+                type="checkbox"
+                checked={formData.availability}
+                onChange={() => setFormData({ ...formData, availability: !formData.availability })}
+              />
+            </div>
+
+            <button type="submit" className="bg-blue-500 text-white p-2 rounded-md mt-4">
+              Submit
+            </button>
+          </form>
+        )}
+      </div>
+
+      <UploadedProductsList />
+    </>
   );
 };
 
