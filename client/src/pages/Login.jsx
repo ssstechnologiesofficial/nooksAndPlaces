@@ -2,89 +2,93 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
-  const [showCodeInput, setShowCodeInput] = useState(false);
-  const [verificationMessage, setVerificationMessage] = useState("");
+    const [email, setEmail] = useState("");
+    const [otp, setOtp] = useState("");
+    const [isOtpSent, setIsOtpSent] = useState(false);
+    const [message, setMessage] = useState("");
 
-  // Send Email with 6-digit code
-  const sendEmail = async () => {
-    console.log(email)
-    try {
-      const response = await axios.post("http://localhost:5000/api/send-code", { email });
-      if (response.data.success) {
-        setShowCodeInput(true);
-      }
-    } catch (error) {
-      console.error("Error sending email:", error);
-    }
-  };
+    // Send OTP
+    const sendOTP = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post("http://localhost:5000/api/generate-otp", { email });
+            console.log("Send OTP Response:", response.data); // Debugging
+    
+            if (response.data.success) {  // ✅ Fix: `success` check added
+                setIsOtpSent(true);
+                setMessage("OTP sent successfully to your email.");
+            } else {
+                setMessage(response.data.message || "Failed to send OTP. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error sending OTP:", error);
+            setMessage("Failed to send OTP. Please try again.");
+        }
+    };
+    
+    const verifyOTP = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post("http://localhost:5000/api/verify-otp", { email, otp });
+            console.log("Verify OTP Response:", response.data); // Debugging
+    
+            if (response.data.success) {  // ✅ Fix: `success` check added
+                setMessage("OTP verified successfully!");
+            } else {
+                setMessage(response.data.message || "Invalid OTP. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error verifying OTP:", error);
+            setMessage("Invalid OTP. Please try again.");
+        }
+    };
+    
 
-  // Verify Code
-  const verifyCode = async () => {
-    try {
-      const response = await axios.post("http://localhost:5000/api/verify-code", { email, code });
-      if (response.data.success) {
-        setVerificationMessage("✅ Verification successful!");
-      } else {
-        setVerificationMessage("❌ Invalid code. Try again.");
-      }
-    } catch (error) {
-      console.error("Error verifying code:", error);
-    }
-  };
+    return (
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+            <div className="bg-white p-6 rounded-lg shadow-md w-80">
+                <h2 className="text-xl font-bold text-center">Login</h2>
 
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white shadow-lg p-8 w-[400px] rounded-lg mt-[-50px]">
-        <h1 className="text-2xl font-bold text-center text-gray-800">Nook & Places</h1>
-        <h2 className="text-lg font-semibold text-gray-700 mt-4">Log in</h2>
-        <p className="text-sm text-gray-600 mt-2">
-          Enter your email and we'll send you a login code.
-        </p>
+                {!isOtpSent ? ( // ✅ Ye correctly dikhana chahiye
+                    <form onSubmit={sendOTP} className="mt-4">
+                        <input
+                            type="email"
+                            placeholder="Enter your email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            className="w-full p-2 border rounded"
+                        />
+                        <button
+                            type="submit"
+                            className="w-full mt-4 bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+                        >
+                            Send OTP
+                        </button>
+                    </form>
+                ) : ( // ✅ OTP Send hone ke baad ye dikhna chahiye
+                    <form onSubmit={verifyOTP} className="mt-4">
+                        <input
+                            type="text"
+                            placeholder="Enter OTP"
+                            value={otp}
+                            onChange={(e) => setOtp(e.target.value)}
+                            required
+                            className="w-full p-2 border rounded"
+                        />
+                        <button
+                            type="submit"
+                            className="w-full mt-4 bg-green-500 text-white py-2 rounded hover:bg-green-600"
+                        >
+                            Verify OTP
+                        </button>
+                    </form>
+                )}
 
-        {/* Email Input */}
-        {!showCodeInput ? (
-          <>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="mt-4 w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <button
-              onClick={sendEmail}
-              className="bg-blue-600 text-white w-full px-4 py-2 mt-4 rounded-md hover:bg-blue-700"
-            >
-              Send Code
-            </button>
-          </>
-        ) : (
-          <>
-            <input
-              type="text"
-              placeholder="Enter 6-digit code"
-              className="mt-4 w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-            />
-            <button
-              onClick={verifyCode}
-              className="bg-green-600 text-white w-full px-4 py-2 mt-4 rounded-md hover:bg-green-700"
-            >
-              Verify Code
-            </button>
-            <p className="text-sm text-center mt-2">{verificationMessage}</p>
-          </>
-        )}
-
-        <p className="text-xs text-blue-500 mt-4">
-          <a href="/privacy-policy" className="underline">Privacy</a>
-        </p>
-      </div>
-    </div>
-  );
+                {message && <p className="mt-4 text-center text-red-500">{message}</p>}
+            </div>
+        </div>
+    );
 };
 
 export default Login;
