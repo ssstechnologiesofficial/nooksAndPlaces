@@ -1,13 +1,13 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "./store/userSlice";  
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 const App = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -18,11 +18,14 @@ const App = () => {
     }
   }, [dispatch]);
 
+  // Hide Navbar & Footer only on "/orders" page
+  const hideNavbarFooter = location.pathname === "/orders";
+
   return (
     <main className="">
-      <Navbar/>
+      {!hideNavbarFooter && <Navbar />}
       <Outlet />
-      <Footer/>
+      {!hideNavbarFooter && <Footer />}
     </main>
   );
 };
