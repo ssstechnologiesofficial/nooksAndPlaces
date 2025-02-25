@@ -3,8 +3,7 @@ import axios from 'axios';
 
 const UploadedProductsList = () => {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+
 
   const fetchProducts = async () => {
     try {
@@ -22,8 +21,7 @@ const UploadedProductsList = () => {
     fetchProducts();
   }, []);
 
-  if (loading) return <p>Loading products...</p>;
-  if (error) return <p>Error: {error}</p>;
+
 
   const BASE_URL = 'http://localhost:5000/';
 

@@ -9,7 +9,7 @@ const { adminLogin } = require('../controllers/adminController');
 // Client routes
 const {  generateOTP, verifyOTP } = require("../controllers/clientControllers/authController");
 const contactController = require("../controllers/contactController");
-const { uploadProduct, uploadMiddleware, getAllProducts, getProductById } = require('../controllers/ProductController');
+const { uploadProduct, uploadMiddleware, getAllProducts, getProductById, updateProduct, deleteProduct } = require('../controllers/ProductController');
 
 const router = express.Router();
 
@@ -32,6 +32,8 @@ router.post('/loginAdmin', adminLogin);
 router.post('/uploadProduct', uploadMiddleware , uploadProduct);
 router.get('/getproducts', getAllProducts);
 router.get("/getproduct/:id", getProductById);
+router.put("/updateProduct/:id", updateProduct);  // Edit product
+router.delete("/deleteProduct/:id", deleteProduct); // Delete product
 
 
 //Contact Routes
