@@ -3,6 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const Product = require('../models/Product');
 
+// Set up multer storage for image upload
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/');
@@ -14,21 +15,32 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+// Controller to upload a new product
 const uploadProduct = async (req, res) => {
   try {
-    const { productName, mrp, sellingPrice, description } = req.body;
+    const { productName, mrp, sellingPrice, description, addToCart, wishlist, availability, size, vendor, productType } = req.body;
+
+    // Ensure 'size' is parsed as an array (if it's passed as a string)
+    const parsedSize = Array.isArray(size) ? size : size.split(',');
+
+    // Process image files
     const images = req.files['images'] ? req.files['images'].map((file) => file.path) : [];
-
-
 
     const newProduct = new Product({
       productName,
       mrp,
       sellingPrice,
       description,
+      addToCart: addToCart || false,  // Default to false if not provided
+      wishlist: wishlist || false,    // Default to false if not provided
+      availability: availability || true,  // Default to true if not provided
+      size: parsedSize,  // Make sure the size is in array format
+      vendor,
+      productType,
       images,
     });
 
+    // Save the product to the database
     await newProduct.save();
 
     res.status(201).json({ message: 'Product uploaded successfully', product: newProduct });
@@ -37,11 +49,10 @@ const uploadProduct = async (req, res) => {
   }
 };
 
+// Middleware for handling file uploads
 const uploadMiddleware = upload.fields([
-  // { name: 'img', maxCount: 1 },
-  { name: 'images', maxCount: 10 },
+  { name: 'images', maxCount: 10 }, // Allow up to 10 images to be uploaded
 ]);
-
 
 
 const getAllProducts = async (req, res) => {
