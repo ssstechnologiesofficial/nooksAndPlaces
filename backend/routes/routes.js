@@ -1,7 +1,5 @@
 const express = require('express');
 const multer = require('multer');
-// const {protect} =require('../middleware/authMiddleware');
-const { sendCode, verifyCode } = require("../controllers/emailAuthController");
 
 // Admin routes
 const categoryController = require('../controllers/categoryController');
@@ -9,7 +7,7 @@ const { adminLogin } = require('../controllers/adminController');
 
 
 // Client routes
-const userController = require('../controllers/clientControllers/userController');
+const {  generateOTP, verifyOTP } = require("../controllers/clientControllers/authController");
 const contactController = require("../controllers/contactController");
 const { uploadProduct, uploadMiddleware, getAllProducts } = require('../controllers/ProductController');
 
@@ -35,13 +33,6 @@ router.post('/uploadProduct', uploadMiddleware , uploadProduct);
 router.get('/getproducts', getAllProducts);
 
 
-//Routes for Signin,login
-router.post('/register', userController.registerUser);
-router.post('/login', userController.loginUser);
-router.get('/profile', userController.getProfile);
-
-
-
 //Contact Routes
 router.post("/createContact", contactController.createContact);
 router.get("/getContacts", contactController.getContacts);
@@ -49,7 +40,8 @@ router.get("/getContactById/:id", contactController.getContactById);
 router.put("/updateContact/:id", contactController.updateContact);
 router.delete("/deleteContact/:id", contactController.deleteContact);
 
-router.post("/send-code", sendCode);    
-router.post("/verify-code", verifyCode); 
+//otp routes
+router.post("/generate-otp", generateOTP);
+router.post("/verify-otp", verifyOTP);
 
 module.exports = router;

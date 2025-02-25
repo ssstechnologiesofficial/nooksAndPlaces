@@ -1,90 +1,113 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
-  const [showCodeInput, setShowCodeInput] = useState(false);
-  const [verificationMessage, setVerificationMessage] = useState("");
+    const [email, setEmail] = useState("");
+    const [otp, setOtp] = useState("");
+    const [isOtpSent, setIsOtpSent] = useState(false);
+    const [message, setMessage] = useState("");
+    const navigate = useNavigate(); // Initialize navigate
 
-  // Send Email with 6-digit code
-  const sendEmail = async () => {
-    console.log(email)
-    try {
-      const response = await axios.post("http://localhost:5000/api/send-code", { email });
-      if (response.data.success) {
-        setShowCodeInput(true);
-      }
-    } catch (error) {
-      console.error("Error sending email:", error);
-    }
-  };
+    // Send OTP
+    const sendOTP = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post("http://localhost:5000/api/generate-otp", { email });
+            if (response.data.success) {
+                setIsOtpSent(true);
+                setMessage("");
+            } else {
+                setMessage(response.data.message || "Failed to send OTP. Please try again.");
+            }
+        } catch (error) {
+            setMessage("Failed to send OTP. Please try again.");
+        }
+    };
 
-  // Verify Code
-  const verifyCode = async () => {
-    try {
-      const response = await axios.post("http://localhost:5000/api/verify-code", { email, code });
-      if (response.data.success) {
-        setVerificationMessage("✅ Verification successful!");
-      } else {
-        setVerificationMessage("❌ Invalid code. Try again.");
-      }
-    } catch (error) {
-      console.error("Error verifying code:", error);
-    }
-  };
+    // Verify OTP
+    const verifyOTP = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post("http://localhost:5000/api/verify-otp", { email, otp });
+            if (response.data.success) {
+                navigate("/orders"); // Redirect to Order Page after successful OTP
+            } else {
+                setMessage(response.data.message || "Invalid OTP. Please try again.");
+            }
+        } catch (error) {
+            setMessage("Invalid OTP. Please try again.");
+        }
+    };
 
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white shadow-lg p-8 w-[400px] rounded-lg mt-[-50px]">
-        <h1 className="text-2xl font-bold text-center text-gray-800">Nook & Places</h1>
-        <h2 className="text-lg font-semibold text-gray-700 mt-4">Log in</h2>
-        <p className="text-sm text-gray-600 mt-2">
-          Enter your email and we'll send you a login code.
-        </p>
+    return (
+        <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+                <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Nooks & Places</h1>
 
-        {/* Email Input */}
-        {!showCodeInput ? (
-          <>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="mt-4 w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <button
-              onClick={sendEmail}
-              className="bg-blue-600 text-white w-full px-4 py-2 mt-4 rounded-md hover:bg-blue-700"
-            >
-              Send Code
-            </button>
-          </>
-        ) : (
-          <>
-            <input
-              type="text"
-              placeholder="Enter 6-digit code"
-              className="mt-4 w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-            />
-            <button
-              onClick={verifyCode}
-              className="bg-green-600 text-white w-full px-4 py-2 mt-4 rounded-md hover:bg-green-700"
-            >
-              Verify Code
-            </button>
-            <p className="text-sm text-center mt-2">{verificationMessage}</p>
-          </>
-        )}
+                {!isOtpSent ? (
+                    <>
+                        <h2 className="text-xl font-semibold text-gray-700 mb-2">Log In</h2>
+                        <p className="text-sm text-gray-500 mb-4">
+                            Enter your email and we'll send you a login code
+                        </p>
+                        <form onSubmit={sendOTP} className="space-y-4">
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                className="w-full p-3 border rounded focus:ring-2 focus:ring-blue-400"
+                            />
+                            <button
+                                type="submit"
+                                className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+                            >
+                                Continue
+                            </button>
+                        </form>
+                    </>
+                ) : (
+                    <>
+                        <h2 className="text-xl font-semibold text-gray-700 mb-2">Enter Code</h2>
+                        <p className="text-sm text-gray-500 mb-4">
+                            Sent to <span className="font-semibold">{email}</span>
+                        </p>
+                        <form onSubmit={verifyOTP} className="space-y-4">
+                            <input
+                                type="text"
+                                placeholder="Enter six-digit code"
+                                value={otp}
+                                onChange={(e) => setOtp(e.target.value)}
+                                required
+                                className="w-full p-3 border rounded focus:ring-2 focus:ring-green-400"
+                            />
+                            <button
+                                type="submit"
+                                className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+                            >
+                                Submit
+                            </button>
+                        </form>
+                        <p
+                            onClick={() => {
+                                setIsOtpSent(false);
+                                setEmail("");
+                                setOtp("");
+                                setMessage("");
+                            }}
+                            className="text-sm text-blue-600 cursor-pointer mt-4 text-center hover:underline"
+                        >
+                            Log in with a different account
+                        </p>
+                    </>
+                )}
 
-        <p className="text-xs text-blue-500 mt-4">
-          <a href="#" className="underline">Privacy</a>
-        </p>
-      </div>
-    </div>
-  );
+                {message && <p className="mt-4 text-center text-red-500">{message}</p>}
+            </div>
+        </div>
+    );
 };
 
 export default Login;

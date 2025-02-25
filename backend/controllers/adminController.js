@@ -1,51 +1,57 @@
-const User = require('../models/client/User');
+const User = require('../models/client/UserModel');
 const bcrypt = require('bcrypt');
 const { generateAuthToken } = require('../utils/authToken');
 
-
 exports.adminLogin = async (req, res) => {
   try {
-    console.log("🔍 Login Request Received:", req.body);
+    console.log('🔍 Login Request Received:', req.body);
 
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(400).json({ message: "❌ Email and password required" });
+      return res
+        .status(400)
+        .json({ message: '❌ Email and password required' });
     }
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: "❌ Invalid credentials" });
+      return res.status(400).json({ message: '❌ Invalid credentials' });
     }
 
     if (![1, 2].includes(user.role)) {
-      return res.status(403).json({ message: "❌ Access denied. Only Admin and Subadmin allowed." });
+      return res
+        .status(403)
+        .json({
+          message: '❌ Access denied. Only Admin and Subadmin allowed.',
+        });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "❌ Invalid credentials" });
+      return res.status(400).json({ message: '❌ Invalid credentials' });
     }
 
     // ✅ Generate JWT Token
     const token = generateAuthToken(user._id, user.role);
-    console.log("✅ Generated Token:", token);
+    console.log('✅ Generated Token:', token);
 
     return res.status(200).json({
-      message: "✅ Login successful",
+      message: '✅ Login successful',
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,
       },
-      token,  // ✅ Token should be returned properly
+      token, // ✅ Token should be returned properly
     });
   } catch (error) {
-    console.error("❌ Error during login:", error);
-    return res.status(500).json({ message: "❌ Internal Server Error", error: error.message });
+    console.error('❌ Error during login:', error);
+    return res
+      .status(500)
+      .json({ message: '❌ Internal Server Error', error: error.message });
   }
 };
-
 
 // controllers/adminController.js
 exports.createSubAdmin = async (req, res) => {
