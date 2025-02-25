@@ -3,7 +3,9 @@ import { Outlet, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "./store/userSlice";  
 import Navbar from "./components/Navbar";
+import LoggedInNavbar from "./components/LoggedInNavbar"; 
 import Footer from "./components/Footer";
+import LoggedInFooter from "./components/LoggedInFooter"; // Fixed import
 
 const App = () => {
   const dispatch = useDispatch();
@@ -18,14 +20,15 @@ const App = () => {
     }
   }, [dispatch]);
 
-  // Hide Navbar & Footer only on "/orders" page
-  const hideNavbarFooter = location.pathname === "/orders";
+  // Pages where LoggedInNavbar and LoggedInFooter should be shown
+  const loggedInRoutes = ["/orders", "/profile", "/settings"];
+  const isLoggedInPage = loggedInRoutes.includes(location.pathname);
 
   return (
-    <main className="">
-      {!hideNavbarFooter && <Navbar />}
+    <main>
+      {isLoggedInPage ? <LoggedInNavbar /> : <Navbar />}
       <Outlet />
-      {!hideNavbarFooter && <Footer />}
+      {isLoggedInPage ? <LoggedInFooter /> : <Footer />} {/* Fixed Footer logic */}
     </main>
   );
 };

@@ -7,6 +7,8 @@ import Shop from '../components/Shop';
 import ContactPage from '../components/ContactPage';
 import PrivacyPolicy from '../components/PrivacyPolicy';
 import OrderPage from '../components/OrderPage';
+import ProfilePage from '../components/ProfilePage';
+import Settings from '../components/Settings';
 
 
 
@@ -45,6 +47,14 @@ export const router = createBrowserRouter([
       {
         path: 'orders',
         element: <OrderPage/>
+      },
+      {
+        path: 'profile',
+        element: <ProfilePage/>
+      },
+      {
+        path: 'settings',
+        element: <Settings/>
       },
     ],
   },
