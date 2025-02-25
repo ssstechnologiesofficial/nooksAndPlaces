@@ -14,7 +14,7 @@ const allowedOrigins = [
   process.env.ADMIN_URL,
 ];
 
-server.get('/', (req, res) => {
+app.get('/', (req, res) => {
   res.send('Hello, World!')
 })
 
