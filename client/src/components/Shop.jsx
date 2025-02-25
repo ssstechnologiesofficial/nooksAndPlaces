@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ShopFilterSection from "./ShopFilterSection";
+import { Link } from "react-router-dom";
+
 
 const Shop = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -78,29 +80,28 @@ const Shop = () => {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-            {products.map((product, index) => (
-              <div key={index} className="relative border rounded-md overflow-hidden shadow p-4">
-                <span className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
-                  Sale
-                </span>
-                
-                {/* Debugging: Check the product data */}
-                {console.log(product)} 
+          {products.map((product, index) => (
+  <Link to={`/product/${product._id}`} key={index}>
+    <div className="relative border rounded-md overflow-hidden shadow p-4">
+      <span className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
+        Sale
+      </span>
+      <img
+        src={`${BASE_URL}${product.images[0]}`}
+        alt={product.productName}
+        className="w-full h-80 object-cover"
+      />
+      <div className="text-center mt-2">
+        <h3 className="text-lg font-semibold">{product.productName}</h3>
+        <div className="flex justify-center gap-3">
+          <div className="text-gray-500 line-through">₹{product.mrp}</div>
+          <div className="text-red-500">₹{product.sellingPrice}</div>
+        </div>
+      </div>
+    </div>
+  </Link>
+))}
 
-                <img
-                 src={`${BASE_URL}${product.images[0]}`}// Check if image exists, else use default
-                  alt={product.productName}
-                  className="w-full h-80 object-cover"
-                />
-                <div className="text-center mt-2">
-                  <h3 className="text-lg font-semibold">{product.productName}</h3>
-                  <div className="flex justify-center gap-3">
-                    <div className="text-gray-500 line-through">₹{product.mrp}</div>
-                    <div className="text-red-500">₹{product.sellingPrice}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </div>

@@ -9,7 +9,7 @@ const { adminLogin } = require('../controllers/adminController');
 // Client routes
 const {  generateOTP, verifyOTP } = require("../controllers/clientControllers/authController");
 const contactController = require("../controllers/contactController");
-const { uploadProduct, uploadMiddleware, getAllProducts } = require('../controllers/ProductController');
+const { uploadProduct, uploadMiddleware, getAllProducts, getProductById } = require('../controllers/ProductController');
 
 const router = express.Router();
 
@@ -31,6 +31,7 @@ router.get("/getTotalCategories/total", categoryController.getTotalCategories);
 router.post('/loginAdmin', adminLogin);
 router.post('/uploadProduct', uploadMiddleware , uploadProduct);
 router.get('/getproducts', getAllProducts);
+router.get("/getproduct/:id", getProductById);
 
 
 //Contact Routes

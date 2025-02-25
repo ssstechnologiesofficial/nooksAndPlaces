@@ -7,6 +7,7 @@ import Shop from '../components/Shop';
 import ContactPage from '../components/ContactPage';
 import PrivacyPolicy from '../components/PrivacyPolicy';
 import OrderPage from '../components/OrderPage';
+import ProductPage from '../components/ProductPage';
 
 
 
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
       {
         path: 'orders',
         element: <OrderPage/>
+      },
+      {
+        path: '/product/:id',
+        element: <ProductPage/>
       },
     ],
   },
