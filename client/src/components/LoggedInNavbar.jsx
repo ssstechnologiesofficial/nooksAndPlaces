@@ -31,7 +31,7 @@ const LoggedInNavbar = () => {
                 <h1 className="text-2xl font-bold text-gray-800">Nooks & Places</h1>
                 <Link to="/shop" className="text-gray-700 hover:text-blue-600">Shop</Link>
                 <Link to="/orders" className="text-gray-700 hover:text-blue-600">Orders</Link>
-                <Link to="/dashboard" className="text-gray-700 hover:text-blue-600">Dashboard</Link>
+              
             </div>
 
             <div className="relative" ref={dropdownRef}>
@@ -50,7 +50,7 @@ const LoggedInNavbar = () => {
                         <Link to="/settings" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Settings</Link>
                         <button
                             onClick={handleLogout}
-                            className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
+                            className="block w-full text-left px-4 py-2 text-blue-600 hover:bg-gray-100"
                         >
                             Log Out
                         </button>
