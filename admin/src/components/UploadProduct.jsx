@@ -193,7 +193,7 @@ const UploadProduct = () => {
               ))}
             </div>
 
-            <div className="mb-2">
+            {/* <div className="mb-2">
               <label>Add to Cart</label>
               <input
                 type="checkbox"
@@ -209,9 +209,9 @@ const UploadProduct = () => {
                 checked={formData.wishlist}
                 onChange={() => setFormData({ ...formData, wishlist: !formData.wishlist })}
               />
-            </div>
+            </div> */}
 
-            <div className="mb-2">
+            <div className="mb-2 ">
               <label>Availability</label>
               <input
                 type="checkbox"
