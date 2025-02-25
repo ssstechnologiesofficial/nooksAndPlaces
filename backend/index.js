@@ -14,6 +14,10 @@ const allowedOrigins = [
   process.env.ADMIN_URL,
 ];
 
+server.get('/', (req, res) => {
+  res.send('Hello, World!')
+})
+
 // CORS middleware with the added authorization header
 app.use(
   cors({
