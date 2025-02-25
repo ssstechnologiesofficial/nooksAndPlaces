@@ -1,5 +1,5 @@
 const User = require('../models/client/UserModel');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { generateAuthToken } = require('../utils/authToken');
 
 exports.adminLogin = async (req, res) => {
