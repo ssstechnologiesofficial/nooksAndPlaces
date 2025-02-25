@@ -1,12 +1,12 @@
 const jwt = require("jsonwebtoken");
 
-const generateAuthToken = (id, role) => {
-  console.log("🔑 Generating Token for ID:", id, "Role:", role);
+const generateAuthToken = (email) => {
+  console.log("🔑 Generating Token for ID:", email);
   if (!process.env.JWT_SECRET) {
     console.error("⛔ JWT_SECRET is missing in .env file!");
   }
 
-  return jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: "1d" });
+  return jwt.sign({ email}, process.env.JWT_SECRET, { expiresIn: "1d" });
 };
 
 

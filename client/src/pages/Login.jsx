@@ -11,6 +11,8 @@ const Login = () => {
 
     // Send OTP
     const sendOTP = async (e) => {
+      
+
         e.preventDefault();
         try {
             const response = await axios.post("http://localhost:5000/api/generate-otp", { email });
@@ -25,13 +27,22 @@ const Login = () => {
         }
     };
 
-    // Verify OTP
+    // Verify OTP & Store Token
     const verifyOTP = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post("http://localhost:5000/api/verify-otp", { email, otp });
-            if (response.data.success) {
-                navigate("/orders"); // Redirect to Order Page after successful OTP
+    
+            console.log("OTP Verification Response:", response.data);
+            
+            if (response.data.success && response.data.token) {
+                console.log("✅ Token received:", response.data.token);
+    
+                // ✅ Store JWT token in localStorage
+                localStorage.setItem("token", response.data.token);
+                localStorage.setItem("email", email);
+    
+                navigate("/orders"); // Redirect to Orders Page
             } else {
                 setMessage(response.data.message || "Invalid OTP. Please try again.");
             }
@@ -39,11 +50,12 @@ const Login = () => {
             setMessage("Invalid OTP. Please try again.");
         }
     };
+    
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
-                <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Nooks & Places</h1>
+                <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Nook & Places</h1>
 
                 {!isOtpSent ? (
                     <>
