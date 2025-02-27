@@ -92,6 +92,9 @@ const ProductPage = () => {
           <p className="text-gray-700">
             <strong>Product Type:</strong> {product.productType}
           </p>
+          <p className="text-gray-700">
+            <strong>Product Type:</strong> {product.size}
+          </p>
 
           {/* Quantity Selector */}
           <div className="mt-6 flex items-center gap-4">

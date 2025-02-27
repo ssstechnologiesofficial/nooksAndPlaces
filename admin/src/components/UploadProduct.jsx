@@ -22,9 +22,12 @@ const UploadProduct = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "size" ? value.split(",").map((s) => s.trim()) : value, // ✅ Always convert `size` to an array
+    }));
   };
-
+  
   const handleMultipleImagesChange = (e) => {
     const files = Array.from(e.target.files);
 
@@ -72,7 +75,7 @@ const UploadProduct = () => {
         mrp: "",
         sellingPrice: "",
         description: "",
-        size: "",
+        size: [],
         vendor: "",
         productType: "",
         images: [],
@@ -104,6 +107,17 @@ const UploadProduct = () => {
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/deleteProduct/${id}`);
+      setProducts(products.filter((product) => product._id !== id));
+      alert("Product deleted successfully");
+    } catch (error) {
+      console.error("Error deleting product", error);
+      alert("Failed to delete product");
+    }
+  };
 
   const BASE_URL = "http://localhost:5000/";
 
@@ -169,17 +183,18 @@ const UploadProduct = () => {
               />
             </div>
 
-            <div className="mb-2">
-              <label>Size</label>
-              <input
-                type="text"
-                name="size"
-                value={formData.size}
-                onChange={handleChange}
-                className="border p-2 w-full rounded-md"
-                placeholder="Comma-separated sizes (e.g., S,M,L)"
-              />
-            </div>
+            <input
+              type="text"
+              name="size"
+              value={
+                Array.isArray(formData.size)
+                  ? formData.size.join(", ")
+                  : formData.size
+              } // ✅ Ensures `size` is an array
+              onChange={handleChange}
+              className="border p-2 w-full rounded-md"
+              placeholder="Comma-separated sizes (e.g., S,M,L)"
+            />
 
             <div className="mb-2">
               <label>Vendor</label>
@@ -226,24 +241,6 @@ const UploadProduct = () => {
               ))}
             </div>
 
-            {/* <div className="mb-2">
-              <label>Add to Cart</label>
-              <input
-                type="checkbox"
-                checked={formData.addToCart}
-                onChange={() => setFormData({ ...formData, addToCart: !formData.addToCart })}
-              />
-            </div>
-
-            <div className="mb-2">
-              <label>Wishlist</label>
-              <input
-                type="checkbox"
-                checked={formData.wishlist}
-                onChange={() => setFormData({ ...formData, wishlist: !formData.wishlist })}
-              />
-            </div> */}
-
             <div className="mb-2 ">
               <label>Availability</label>
               <input
@@ -271,43 +268,47 @@ const UploadProduct = () => {
       {/* 
       //ejfoipwerjfojeropfjropfjo */}
 
-<div className="p-4 m-0 rounded-md text-white">
-  <h2 className="text-2xl text-black mb-4">Uploaded Products :</h2>
+      <div className="p-4 m-0 rounded-md text-white">
+        <h2 className="text-2xl text-black mb-4">Uploaded Products :</h2>
 
-  {products.length === 0 ? (
-    <p>No products uploaded yet.</p>
-  ) : (
-    <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
-      {products.map((product) => (
-        <div
-          key={product._id}
-          className="bg-white p-4 rounded-md shadow-md text-black"
-        >
-          {/* Center the image */}
-          {product.images.length > 0 && (
-            <div className="flex justify-center items-center">
-              <img
-                src={`${BASE_URL}${product.images[0]}`}
-                alt="Product"
-                className="w-32 h-32 object-cover mb-2 border rounded"
-              />
-            </div>
-          )}
-          <h3 className="text-lg font-bold text-center">{product.productName}</h3>
-          <div className="flex justify-evenly">
-            <div className="bg-red-700 rounded-full p-1">
-              <MdDeleteOutline className="text-white text-md" />
-            </div>
-            <div className="bg-green-700 rounded-full p-1">
-              <MdOutlineEdit className="text-white text-md" />
-            </div>
+        {products.length === 0 ? (
+          <p>No products uploaded yet.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+            {products.map((product) => (
+              <div
+                key={product._id}
+                className="bg-white p-4 rounded-md shadow-md text-black"
+              >
+                {/* Center the image */}
+                {product.images.length > 0 && (
+                  <div className="flex justify-center items-center">
+                    <img
+                      src={`${BASE_URL}${product.images[0]}`}
+                      alt="Product"
+                      className="w-32 h-32 object-cover mb-2 border rounded"
+                    />
+                  </div>
+                )}
+                <h3 className="text-lg font-bold text-center">
+                  {product.productName}
+                </h3>
+                <div className="flex justify-evenly">
+                  <div className="bg-red-700 rounded-full p-1">
+                    <MdDeleteOutline
+                      onClick={() => handleDelete(product._id)}
+                      className="text-white text-md"
+                    />
+                  </div>
+                  <div className="bg-green-700 rounded-full p-1">
+                    <MdOutlineEdit className="text-white text-md" />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
-      ))}
-    </div>
-  )}
-</div>
-
+        )}
+      </div>
     </>
   );
 };
