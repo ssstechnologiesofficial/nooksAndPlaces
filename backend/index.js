@@ -19,20 +19,30 @@ app.get('/', (req, res) => {
 })
 
 // CORS middleware with the added authorization header
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true); 
+//       } else {
+//         callback(new Error('Not allowed by CORS')); // Reject the request
+//       }
+//     },
+//     credentials: true, 
+//     methods: ['GET', 'POST','PUT',"DELETE"], // Allow only GET and POST methods
+//     allowedHeaders: ['Content-Type', 'Authorization'], // Include Authorization header
+//   })
+// );
+
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true); 
-      } else {
-        callback(new Error('Not allowed by CORS')); // Reject the request
-      }
-    },
-    credentials: true, 
-    methods: ['GET', 'POST','PUT',"DELETE"], // Allow only GET and POST methods
-    allowedHeaders: ['Content-Type', 'Authorization'], // Include Authorization header
+    origin: '*', // Allow all origins (for testing, later restrict it)
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
+
 
 // Middleware
 app.use(bodyParser.json());
