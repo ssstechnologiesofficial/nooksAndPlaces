@@ -20,7 +20,7 @@ const ProfilePage = () => {
     mobile: '',
   });
 
-  const email = 'karishmadawar123@gmail.com'; // Pre-filled email
+  const email = localStorage.getItem("email");// Pre-filled email
 
   const handleSaveAddress = () => {
     if (
