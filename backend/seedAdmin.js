@@ -1,7 +1,7 @@
 const connectDB = require('./config/db');  
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const User = require('./models/client/User');
+const User = require('./models/client/UserModel');
 require('dotenv').config();
 
 const seedAdmin = async () => {
