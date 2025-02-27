@@ -13,7 +13,7 @@ const Shop = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/getproducts'); // Replace with your API URL
+        const response = await fetch('https://nooksandplacesbackend.onrender.com/api/getproducts'); // Replace with your API URL
         if (!response.ok) {
           throw new Error("Failed to fetch products");
         }
@@ -36,7 +36,7 @@ const Shop = () => {
   if (error) {
     return <div>Error: {error}</div>;  // Display error message if there is an error
   }
-  const BASE_URL = 'http://localhost:5000/';
+  const BASE_URL = 'https://nooksandplacesbackend.onrender.com/';
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="container mx-auto p-4 md:p-6 flex flex-col md:flex-row gap-6">

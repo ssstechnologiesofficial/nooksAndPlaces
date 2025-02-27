@@ -31,7 +31,7 @@
 //     e.preventDefault();
 
 //     try {
-//       const response = await axios.post("http://localhost:5000/api/register", formData, {
+//       const response = await axios.post("https://nooksandplacesbackend.onrender.com/api/register", formData, {
 //         headers: { "Content-Type": "application/json" },
 //         withCredentials: true,
 //       });

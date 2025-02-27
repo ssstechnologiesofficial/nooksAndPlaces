@@ -14,7 +14,7 @@ const AddCategory = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/getCategories");
+      const response = await fetch("https://nooksandplacesbackend.onrender.com/api/getCategories");
       const data = await response.json();
       const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Sort latest first
       setCategories(sortedData);
@@ -41,8 +41,8 @@ const AddCategory = () => {
 
     try {
       const url = editingCategory
-        ? `http://localhost:5000/api/updateCategory/${editingCategory._id}`
-        : "http://localhost:5000/api/addCategory";
+        ? `https://nooksandplacesbackend.onrender.com/api/updateCategory/${editingCategory._id}`
+        : "https://nooksandplacesbackend.onrender.com/api/addCategory";
 
       const response = await fetch(url, {
         method: editingCategory ? "PUT" : "POST",
@@ -67,7 +67,7 @@ const AddCategory = () => {
   // Handle Edit Click
   const handleEdit = (category) => {
     setTitle(category.title);
-    setPreview(`http://localhost:5000${category.banner}`);
+    setPreview(`https://nooksandplacesbackend.onrender.com${category.banner}`);
     setEditingCategory(category);
   };
 
@@ -75,7 +75,7 @@ const AddCategory = () => {
   const handleDelete = async (categoryId) => {
     if (window.confirm("Are you sure you want to delete this category?")) {
       try {
-        const response = await fetch(`http://localhost:5000/api/deleteCategory/${categoryId}`, {
+        const response = await fetch(`https://nooksandplacesbackend.onrender.com/api/deleteCategory/${categoryId}`, {
           method: "DELETE",
         });
 
@@ -150,7 +150,7 @@ const AddCategory = () => {
                   <td className="border border-gray-300 px-4 py-2">{index + 1}</td>
                   <td className="border border-gray-300 px-4 py-2">
                     <img
-                      src={`http://localhost:5000${category.banner}`}
+                      src={`https://nooksandplacesbackend.onrender.com${category.banner}`}
                       alt={category.title}
                       className="w-12 h-12 object-cover  mx-auto"
                     />

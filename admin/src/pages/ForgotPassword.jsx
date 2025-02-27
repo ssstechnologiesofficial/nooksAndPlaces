@@ -9,7 +9,7 @@ const ForgotPassword = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:5000/api/reset-password', {
+      const response = await fetch('https://nooksandplacesbackend.onrender.com/api/reset-password', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -59,7 +59,7 @@ const UploadProduct = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/uploadProduct",
+        "https://nooksandplacesbackend.onrender.com/api/uploadProduct",
         data,
         {
           headers: {
@@ -94,7 +94,7 @@ const UploadProduct = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/getproducts");
+      const response = await axios.get("https://nooksandplacesbackend.onrender.com/api/getproducts");
       console.log(response.data);
       setProducts(response.data);
     } catch (err) {
@@ -110,7 +110,7 @@ const UploadProduct = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/deleteProduct/${id}`);
+      await axios.delete(`https://nooksandplacesbackend.onrender.com/api/deleteProduct/${id}`);
       setProducts(products.filter((product) => product._id !== id));
       alert("Product deleted successfully");
     } catch (error) {
@@ -119,7 +119,7 @@ const UploadProduct = () => {
     }
   };
 
-  const BASE_URL = "http://localhost:5000/";
+  const BASE_URL = "https://nooksandplacesbackend.onrender.com/";
 
   return (
     <>

@@ -1,4 +1,4 @@
-const backendDomain = 'http://localhost:5000'
+const backendDomain = 'https://nooksandplacesbackend.onrender.com'
 
 const SummaryApi = {
   // For Event

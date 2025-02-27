@@ -21,12 +21,10 @@ const OrderPage = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gray-100">
-  
-
+        <div className="min-h-screen bg-gray-100 flex justify-center items-center px-4 md:px-8 lg:px-16">
             {/* Order Section */}
-            <div className="w-full flex-col min-h-[60vh] px-32 py-5">
-                <h2 className="text-2xl font-semibold text-gray-800 mb-4">Orders</h2>
+            <div className="w-full max-w-4xl min-h-[60vh] px-6 py-5 md:px-12 lg:px-20">
+                <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-4 text-center">Orders</h2>
                 <div className="bg-white shadow-md p-6 rounded-lg w-full text-center">
                     <p className="text-gray-600">No orders yet</p>
                     <p className="text-gray-500 mt-1">Go to store to place an order.</p>

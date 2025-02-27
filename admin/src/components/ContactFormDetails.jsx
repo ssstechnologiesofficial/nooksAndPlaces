@@ -11,7 +11,7 @@ const ContactFormDetail = () => {
 
   const fetchContacts = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/getContacts');
+      const response = await axios.get('https://nooksandplacesbackend.onrender.com/api/getContacts');
       setContacts(response.data);
       setLoading(false);
     } catch (error) {
@@ -23,7 +23,7 @@ const ContactFormDetail = () => {
   const deleteContact = async (id) => {
     if (window.confirm('Are you sure you want to delete this contact?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/deleteContact/${id}`);
+        await axios.delete(`https://nooksandplacesbackend.onrender.com/api/deleteContact/${id}`);
         fetchContacts(); // Refresh data
       } catch (error) {
         console.error('Error deleting contact:', error);

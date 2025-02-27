@@ -25,8 +25,8 @@
 //   const fetchCounts = async () => {
 //     try {
 //       const [courses, events] = await Promise.all([
-//         // axios.get('http://localhost:5000/api/getTotalCourses'),
-//         // axios.get('http://localhost:5000/api/events/count'),
+//         // axios.get('https://nooksandplacesbackend.onrender.com/api/getTotalCourses'),
+//         // axios.get('https://nooksandplacesbackend.onrender.com/api/events/count'),
 //       ])
 
 //       setCounts((prev) => ({

@@ -10,7 +10,7 @@ const ProductPage = () => {
   const [selectedImage, setSelectedImage] = useState("");
   const [isLiked, setIsLiked] = useState(false); // State to hold the hover effect
 
-  const BASE_URL = "http://localhost:5000";
+  const BASE_URL = "https://nooksandplacesbackend.onrender.com";
 
   useEffect(() => {
     const fetchProduct = async () => {

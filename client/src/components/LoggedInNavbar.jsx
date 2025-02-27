@@ -26,22 +26,27 @@ const LoggedInNavbar = () => {
     };
 
     return (
-        <nav className="bg-white shadow-lg px-32 py-6 flex justify-between items-center">
-            <div className="flex items-center gap-6">
-                <h1 className="text-2xl font-bold text-gray-800">Nooks & Places</h1>
-                <Link to="/shop" className="text-gray-700 hover:text-blue-600">Shop</Link>
-                <Link to="/orders" className="text-gray-700 hover:text-blue-600">Orders</Link>
-              
+        <nav className="bg-white shadow-lg px-4 md:px-8 lg:px-16 py-4 flex justify-between items-center flex-wrap">
+            {/* Logo & Links */}
+            <div className="flex items-center gap-4 md:gap-6">
+                <h1 className="text-xl md:text-2xl font-bold text-gray-800">Nooks & Places</h1>
+                
+                {/* Navigation Links - Hidden on mobile, shown on medium screens and above */}
+                <div className="hidden md:flex gap-4">
+                    <Link to="/shop" className="text-gray-700 hover:text-blue-600">Shop</Link>
+                    <Link to="/orders" className="text-gray-700 hover:text-blue-600">Orders</Link>
+                </div>
             </div>
 
+            {/* User Dropdown */}
             <div className="relative" ref={dropdownRef}>
                 <div onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="flex items-center gap-2 cursor-pointer">
-                    <FaUserCircle className="text-3xl text-gray-700" />
+                    <FaUserCircle className="text-2xl md:text-3xl text-gray-700" />
                     {isDropdownOpen ? <FaChevronUp className="text-gray-500" /> : <FaChevronDown className="text-gray-500" />}
                 </div>
 
                 {isDropdownOpen && (
-                    <div className="absolute top-full right-0 mt-2 bg-white shadow-md rounded-md w-64 py-2 border border-gray-200">
+                    <div className="absolute top-full right-0 mt-2 bg-white shadow-md rounded-md w-48 sm:w-56 md:w-64 py-2 border border-gray-200">
                         <div className="flex items-center gap-2 px-4 py-2 border-b border-gray-300">
                             <FaUserCircle className="text-2xl text-gray-700" />
                             <p className="text-sm text-gray-800">{userEmail || "Guest"}</p>
@@ -56,6 +61,12 @@ const LoggedInNavbar = () => {
                         </button>
                     </div>
                 )}
+            </div>
+
+            {/* Mobile Navigation Links - Shown only on small screens */}
+            <div className="w-full mt-4 md:hidden flex flex-col gap-2 text-center">
+                <Link to="/shop" className="text-gray-700 hover:text-blue-600">Shop</Link>
+                <Link to="/orders" className="text-gray-700 hover:text-blue-600">Orders</Link>
             </div>
         </nav>
     );

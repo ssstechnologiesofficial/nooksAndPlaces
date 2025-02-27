@@ -6,7 +6,7 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const response = await fetch("http://localhost:5000/api/login", {
+      const response = await fetch("https://nooksandplacesbackend.onrender.com/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -35,7 +35,7 @@ export const loginAdmin = createAsyncThunk(
   "auth/loginAdmin",
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const response = await fetch("http://localhost:5000/api/loginAdmin", {
+      const response = await fetch("https://nooksandplacesbackend.onrender.com/api/loginAdmin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -89,7 +89,7 @@ export const createSubAdmin = createAsyncThunk(
         permissions,
       };
 
-      const response = await fetch("http://localhost:5000/api/create-subadmin", {
+      const response = await fetch("https://nooksandplacesbackend.onrender.com/api/create-subadmin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

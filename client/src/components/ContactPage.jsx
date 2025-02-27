@@ -22,7 +22,7 @@ const ContactPage = () => {
     setMessage("");
     
     try {
-      const response = await axios.post("http://localhost:5000/api/createContact", formData);
+      const response = await axios.post("https://nooksandplacesbackend.onrender.com/api/createContact", formData);
       setMessage("Thank you! Your message has been sent.");
       setFormData({ name: "", phone: "", email: "", comment: "" });
     } catch (error) {

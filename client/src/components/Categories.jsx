@@ -8,7 +8,7 @@ const Categories = () => {
 
   // Fetch categories from API
   useEffect(() => {
-    fetch("http://localhost:5000/api/getCategories") // Update API URL as per your backend
+    fetch("https://nooksandplacesbackend.onrender.com/api/getCategories") // Update API URL as per your backend
       .then((res) => res.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));
@@ -43,7 +43,7 @@ const Categories = () => {
                 <div key={category._id} className="flex flex-col items-center">
                   <div className="w-[90px] h-[90px] rounded-full overflow-hidden border-2 border-gray-300">
                     <img
-                      src={`http://localhost:5000${category.banner}`} // Backend image path
+                      src={`https://nooksandplacesbackend.onrender.com${category.banner}`} // Backend image path
                       alt={category.title}
                       className="w-full h-full object-cover"
                     />
@@ -62,7 +62,7 @@ const Categories = () => {
               <div key={category._id} className="flex flex-col items-center">
                 <div className="w-[90px] h-[90px] rounded-full overflow-hidden border-2 border-gray-300">
                   <img
-                    src={`http://localhost:5000${category.banner}`}
+                    src={`https://nooksandplacesbackend.onrender.com${category.banner}`}
                     alt={category.title}
                     className="w-full h-full object-cover"
                   />

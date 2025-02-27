@@ -10,7 +10,7 @@ const ShopFilterSection = () => {
 
   // Fetch categories from API
   useEffect(() => {
-    fetch("http://localhost:5000/api/getCategories") // Update API URL if needed
+    fetch("https://nooksandplacesbackend.onrender.com/api/getCategories") // Update API URL if needed
       .then((res) => res.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));
