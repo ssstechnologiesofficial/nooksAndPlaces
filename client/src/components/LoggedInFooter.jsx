@@ -69,10 +69,10 @@ const policies = {
   ),
   'privacy-policy': (
     <div>
-      <p>
+      <p className='mb-5'>
         <strong>Privacy Policy:</strong>
       </p>
-      <p>
+     
         This Privacy Policy describes how F SIX HOMES (the "Site", "we", "us",
         or "our") collects, uses, and discloses your personal information when
         you visit, use our services, or make a purchase from homes.fsix.in (the
@@ -80,24 +80,25 @@ const policies = {
         For purposes of this Privacy Policy, "you" and "your" means you as the
         user of the Services, whether you are a customer, website visitor, or
         another individual whose information we have collected pursuant to this
-        Privacy Policy. Please read this Privacy Policy carefully. By using and
+        Privacy Policy. <br />Please read this Privacy Policy carefully. By using and
         accessing any of the Services, you agree to the collection, use, and
         disclosure of your information as described in this Privacy Policy. If
         you do not agree to this Privacy Policy, please do not use or access any
-        of the Services. Changes to This Privacy Policy We may update this
+        of the Services. <p className='my-5'> <strong> Changes to This Privacy Policy</strong> <br /> We may update this
         Privacy Policy from time to time, including to reflect changes to our
         practices or for other operational, legal, or regulatory reasons. We
         will post the revised Privacy Policy on the Site, update the "Last
-        updated" date and take any other steps required by applicable law. How
-        We Collect and Use Your Personal Information To provide the Services, we
+        updated" date and take any other steps required by applicable law. </p>
+        <p className='mb-5'> <strong> How
+        We Collect and Use Your Personal Information </strong> <br /> To provide the Services, we
         collect and have collected over the past 12 months personal information
         about you from a variety of sources, as set out below. The information
-        that we collect and use varies depending on how you interact with us. In
+        that we collect and use varies depending on how you interact with us. <br /> In
         addition to the specific uses set out below, we may use information we
         collect about you to communicate with you, provide the Services, comply
         with any applicable legal obligations, enforce any applicable terms of
         service, and to protect or defend the Services, our rights, and the
-        rights of our users or others. What Personal Information We Collect The
+        rights of our users or others. <br />What Personal Information We Collect <br />The
         types of personal information we obtain about you depends on how you
         interact with our Site and use our Services. When we use the term
         "personal information", we are referring to information that identifies,
