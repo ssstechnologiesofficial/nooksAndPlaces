@@ -1,5 +1,3 @@
 # Netlify SPA (React, Vue, Angular) Routing Fix
 /*  /index.html  200
 
-# Backend API Calls Redirect to Render/DigitalOcean
-/api/*  https://nooksandplacesbackend.onrender.com/api/:splat  200
