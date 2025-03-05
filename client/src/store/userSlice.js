@@ -35,7 +35,7 @@ export const loginAdmin = createAsyncThunk(
   "auth/loginAdmin",
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const response = await fetch("https://nooksandplacesbackend.onrender.com/api/loginAdmin", {
+      const response = await fetch("http://localhost:5000/api/loginAdmin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

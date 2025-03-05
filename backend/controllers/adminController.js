@@ -1,99 +1,41 @@
-const User = require('../models/client/UserModel');
-const bcrypt = require('bcryptjs');
-const { generateAuthToken } = require('../utils/authToken');
+require("dotenv").config();
+const Admin = require("../models/adminModel");
+const jwt = require("jsonwebtoken");
 
 exports.adminLogin = async (req, res) => {
   try {
-    console.log('🔍 Login Request Received:', req.body);
-
     const { email, password } = req.body;
-    if (!email || !password) {
-      return res
-        .status(400)
-        .json({ message: '❌ Email and password required' });
+    console.log("🛠 Attempting login for email:", email);
+
+    // Check if admin exists
+    const admin = await Admin.findOne({ email });
+
+    if (!admin) {
+      console.log("⛔ Admin not found for email:", email);
+      return res.status(401).json({ message: "Invalid Credentials" });
     }
 
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ message: '❌ Invalid credentials' });
+    console.log("✅ Admin found:", admin);
+
+    // Check if password matches (Since it's plain text)
+    if (password !== admin.password) {
+      console.log("⛔ Invalid password for email:", email);
+      return res.status(401).json({ message: "Invalid Credentials" });
     }
 
-    if (![1, 2].includes(user.role)) {
-      return res
-        .status(403)
-        .json({
-          message: '❌ Access denied. Only Admin and Subadmin allowed.',
-        });
-    }
+    console.log("🔓 Password matched");
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: '❌ Invalid credentials' });
-    }
+    // Generate JWT token
+    const token = jwt.sign({ id: admin._id, role: "admin" }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-    // ✅ Generate JWT Token
-    const token = generateAuthToken(user._id, user.role);
-    console.log('✅ Generated Token:', token);
-
-    return res.status(200).json({
-      message: '✅ Login successful',
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-      token, // ✅ Token should be returned properly
+    console.log("✅ Login successful");
+    res.json({
+      message: "Login successful",
+      token,
+      admin: { id: admin._id, name: admin.name, email: admin.email },
     });
   } catch (error) {
-    console.error('❌ Error during login:', error);
-    return res
-      .status(500)
-      .json({ message: '❌ Internal Server Error', error: error.message });
-  }
-};
-
-// controllers/adminController.js
-exports.createSubAdmin = async (req, res) => {
-  const { name, email, password, contactNo, permissions } = req.body;
-  console.log('Sub-admin creation request received:', req.body);
-
-  try {
-    // Ensure the user is an admin
-    if (req.user.role !== 1) {
-      return res.status(403).json({ message: 'Access denied, admin only' });
-    }
-
-    // Check if email or contact number already exists
-    const existingUser = await User.findOne({
-      $or: [{ email }, { contactNo }],
-    });
-    if (existingUser) {
-      return res
-        .status(400)
-        .json({ message: 'Email or contact number already exists' });
-    }
-
-    // Hash password before saving
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newSubAdmin = new User({
-      name,
-      email,
-      password: hashedPassword,
-      contactNo,
-      role: 2, // Subadmin role
-      permissions: permissions || [], // Permissions for subadmin
-    });
-
-    await newSubAdmin.save();
-
-    res.status(201).json({
-      message: 'Subadmin created successfully',
-      subAdmin: { name, email, permissions },
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Server error' });
+    console.error("🔥 Server error:", error);
+    res.status(500).json({ message: "Server Error", error });
   }
 };

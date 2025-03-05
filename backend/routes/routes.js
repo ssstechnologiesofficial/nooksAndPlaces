@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const userController = require("../controllers/clientControllers/userController");
 
 // Admin routes
 const categoryController = require('../controllers/categoryController');
@@ -47,4 +48,14 @@ router.delete("/deleteContact/:id", contactController.deleteContact);
 router.post("/generate-otp", generateOTP);
 router.post("/verify-otp", verifyOTP);
 
+// User Routes
+router.post("/register", userController.registerUser);
+router.get("/users", userController.getAllUsers);
+router.get("/user/:id", userController.getUserById);
+router.delete("/user/:id", userController.deleteUser);
+
+// Address Routes
+router.post("/user/:id/address", userController.addAddress);
+router.put("/user/:userId/address/:addressId", userController.updateAddress);
+router.delete("/user/:userId/address/:addressId", userController.deleteAddress);
 module.exports = router;

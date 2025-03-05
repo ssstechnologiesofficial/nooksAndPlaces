@@ -95,13 +95,6 @@ const Sidebar = () => {
 
         
 
-          <Link
-            to="member-table"
-            className="flex items-center px-4 py-3 hover:bg-teal-500 hover:text-white rounded-lg transition-colors duration-300"
-          >
-            <FaClipboardList className="mr-2" size={20} />
-            {!isCollapsed && <span>Member Table</span>}
-          </Link>
 
          
 

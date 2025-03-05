@@ -15,7 +15,7 @@ const Login = () => {
 
         e.preventDefault();
         try {
-            const response = await axios.post("https://nooksandplacesbackend.onrender.com/api/generate-otp", { email });
+            const response = await axios.post("http://localhost:5000/api/generate-otp", { email });
             if (response.data.success) {
                 setIsOtpSent(true);
                 setMessage("");
@@ -31,7 +31,7 @@ const Login = () => {
     const verifyOTP = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("https://nooksandplacesbackend.onrender.com/api/verify-otp", { email, otp });
+            const response = await axios.post("http://localhost:5000/api/verify-otp", { email, otp });
     
             console.log("OTP Verification Response:", response.data);
             

@@ -1,35 +1,31 @@
 
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { loginAdmin } from "../../../client/src/store/userSlice"; // Make sure to use the correct path
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const AdminLogin = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [success, setSuccess] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit  = async (e) => {
     e.preventDefault();
     setError("");
-  
+    setSuccess("");
+
     try {
-      const result = await dispatch(loginAdmin({ email, password })).unwrap();
-      console.log("🔑 Token from API:", result.token); // Debugging
-  
-      if (result.token) {
-        navigate("/dashboard/dashboardcards");
-      } else {
-        console.log("⛔ Token not received from API");
-      }
+      const res = await axios.post("http://localhost:5000/api/loginAdmin", { email, password });
+
+      localStorage.setItem("adminToken", res.data.token);
+      setSuccess("Login successful!");
+      navigate("/dashboard/dashboardCards");
     } catch (err) {
-      console.error("⛔ Login Failed:", err.message);
-      setError(err.message || "Invalid credentials");
+      setError(err.response?.data?.message || "Login failed");
     }
   };
-  
+
 
   return (
     <section

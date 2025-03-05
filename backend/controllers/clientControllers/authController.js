@@ -1,6 +1,6 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
-const UserModel = require('../../models/client/UserModel');
+const UserModel = require('../../models/client/otpModel');
 const jwt = require("jsonwebtoken");
 // Configure Nodemailer Transporter
 const transporter = nodemailer.createTransport({
