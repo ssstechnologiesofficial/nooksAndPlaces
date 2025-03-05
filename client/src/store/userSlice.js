@@ -1,27 +1,29 @@
-
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 // Thunk for User Login
 export const loginUser = createAsyncThunk(
-  "auth/loginUser",
+  'auth/loginUser',
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const response = await fetch("https://nooksandplacesbackend.onrender.com/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        'https://nooksandplacesbackend.onrender.com/api/login',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Login failed");
+        throw new Error(data.message || 'Login failed');
       }
 
       // Store in localStorage
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      localStorage.setItem("role", data.user.role);
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('role', data.user.role);
 
       return data;
     } catch (error) {
@@ -32,51 +34,56 @@ export const loginUser = createAsyncThunk(
 
 // Thunk for Admin Login
 export const loginAdmin = createAsyncThunk(
-  "auth/loginAdmin",
+  'auth/loginAdmin',
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const response = await fetch("http://localhost:5000/api/loginAdmin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        ' https://nooksandplacesbackend.onrender.com/api/loginAdmin',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
-      const text = await response.text();  // Raw response
-      console.log("🔍 Raw API Response:", text);  // Debugging
+      const text = await response.text(); // Raw response
+      console.log('🔍 Raw API Response:', text); // Debugging
 
       if (!text) {
-        throw new Error("❌ Empty response from server");
+        throw new Error('❌ Empty response from server');
       }
 
       const data = JSON.parse(text);
-      console.log("✅ Parsed Response:", data);  // Debugging
+      console.log('✅ Parsed Response:', data); // Debugging
 
       if (!response.ok) {
-        throw new Error(data.message || "❌ Login failed");
+        throw new Error(data.message || '❌ Login failed');
       }
 
       // Store in localStorage
-      console.log("✅ Storing Token in LocalStorage:", data.token);
-      localStorage.setItem("adminToken", data.token);
-      localStorage.setItem("admin", JSON.stringify(data.admin));
+      console.log('✅ Storing Token in LocalStorage:', data.token);
+      localStorage.setItem('adminToken', data.token);
+      localStorage.setItem('admin', JSON.stringify(data.admin));
 
       return data;
     } catch (error) {
-      console.error("⛔ Login error:", error.message);
+      console.error('⛔ Login error:', error.message);
       return rejectWithValue(error.message);
     }
   }
 );
 
-
 // Thunk for Subadmin Creation
 export const createSubAdmin = createAsyncThunk(
-  "auth/createSubAdmin",
-  async ({ name, email, password, contactNo, role, permissions }, { rejectWithValue }) => {
+  'auth/createSubAdmin',
+  async (
+    { name, email, password, contactNo, role, permissions },
+    { rejectWithValue }
+  ) => {
     try {
-      const adminToken = localStorage.getItem("adminToken"); // Use admin token
+      const adminToken = localStorage.getItem('adminToken'); // Use admin token
       if (!adminToken) {
-        throw new Error("Admin token is missing. Please log in again.");
+        throw new Error('Admin token is missing. Please log in again.');
       }
 
       // Only include companyId for role 3 (admin)
@@ -89,38 +96,41 @@ export const createSubAdmin = createAsyncThunk(
         permissions,
       };
 
-      const response = await fetch("https://nooksandplacesbackend.onrender.com/api/create-subadmin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${adminToken}`,  // Ensure Bearer format
-        },
-        body: JSON.stringify(bodyData),
-      });
+      const response = await fetch(
+        'https://nooksandplacesbackend.onrender.com/api/create-subadmin',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminToken}`, // Ensure Bearer format
+          },
+          body: JSON.stringify(bodyData),
+        }
+      );
 
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.message || "Subadmin creation failed");
+        throw new Error(data.message || 'Subadmin creation failed');
       }
 
       return data;
     } catch (error) {
-      console.error("Subadmin creation failed:", error.message);
+      console.error('Subadmin creation failed:', error.message);
       return rejectWithValue(error.message);
     }
   }
 );
 
 const initialState = {
-  user: JSON.parse(localStorage.getItem("user")) || null,
-  token: localStorage.getItem("token") || null,
-  role: localStorage.getItem("role") || null,
+  user: JSON.parse(localStorage.getItem('user')) || null,
+  token: localStorage.getItem('token') || null,
+  role: localStorage.getItem('role') || null,
   // admin: JSON.parse(localStorage.getItem("admin")) || null,
-  adminToken: localStorage.getItem("adminToken") || null,
+  adminToken: localStorage.getItem('adminToken') || null,
 };
 
 const userSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
     logout: (state) => {
@@ -131,17 +141,17 @@ const userSlice = createSlice({
       state.adminToken = null;
 
       // Remove from localStorage
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      localStorage.removeItem("role");
-      localStorage.removeItem("adminToken");
-      localStorage.removeItem("admin");
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('role');
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('admin');
     },
     loginSuccess: (state, action) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.role = action.payload.user.role;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -151,25 +161,25 @@ const userSlice = createSlice({
         state.role = action.payload.user.role;
       })
       .addCase(loginUser.rejected, (state, action) => {
-        console.error("User login failed:", action.payload);
+        console.error('User login failed:', action.payload);
       })
       .addCase(loginAdmin.fulfilled, (state, action) => {
         state.admin = action.payload.admin;
         state.adminToken = action.payload.token;
       })
       .addCase(loginAdmin.rejected, (state, action) => {
-        console.error("Admin login failed:", action.payload);
+        console.error('Admin login failed:', action.payload);
       })
       // Handle Subadmin Creation
       .addCase(createSubAdmin.fulfilled, (state, action) => {
-        console.log("Subadmin created successfully:", action.payload);
+        console.log('Subadmin created successfully:', action.payload);
         // Optionally, you can update the state if needed, for example:
         // state.subadmins.push(action.payload.subadmin);
       })
       .addCase(createSubAdmin.rejected, (state, action) => {
-        console.error("Subadmin creation failed:", action.payload);
+        console.error('Subadmin creation failed:', action.payload);
       });
   },
 });
-export const { logout,loginSuccess} = userSlice.actions;
+export const { logout, loginSuccess } = userSlice.actions;
 export default userSlice.reducer;

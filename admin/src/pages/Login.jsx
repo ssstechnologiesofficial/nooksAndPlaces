@@ -1,31 +1,32 @@
-
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AdminLogin = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
-  const handleSubmit  = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
 
     try {
-      const res = await axios.post("http://localhost:5000/api/loginAdmin", { email, password });
+      const res = await axios.post(
+        ' https://nooksandplacesbackend.onrender.com/api/loginAdmin',
+        { email, password }
+      );
 
-      localStorage.setItem("adminToken", res.data.token);
-      setSuccess("Login successful!");
-      navigate("/dashboard/dashboardCards");
+      localStorage.setItem('adminToken', res.data.token);
+      setSuccess('Login successful!');
+      navigate('/dashboard/dashboardCards');
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      setError(err.response?.data?.message || 'Login failed');
     }
   };
-
 
   return (
     <section
@@ -56,7 +57,9 @@ const AdminLogin = () => {
             </div>
 
             <div className="relative">
-              <label className="block text-sm font-medium mb-2">Password:</label>
+              <label className="block text-sm font-medium mb-2">
+                Password:
+              </label>
               <input
                 type="password"
                 placeholder="Enter password"
