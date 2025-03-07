@@ -1,5 +1,5 @@
 import React from "react";
-import homeImg2 from "../assets/homeImg2.webp";
+import homeImg2 from "../assets/img1.png";
 
 const TerracottaCollection = () => {
   return (

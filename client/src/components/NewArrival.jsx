@@ -1,6 +1,6 @@
 import React from "react";
-import newArrival1 from "../assets/newArrival1.webp";
-import newArrival2 from "../assets/newArrival2.jpg";
+import newArrival1 from "../assets/pot8.png";
+import newArrival2 from "../assets/pot5.png";
 
 const NewArrival = () => {
   return (

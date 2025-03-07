@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { FaShoppingBag, FaBars, FaTimes } from "react-icons/fa";
-import logo from "../assets/Logo.png";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { FaShoppingBag, FaBars, FaTimes } from 'react-icons/fa';
+import logo from '../assets/logo.png';
 
 const Navbar = () => {
   const [wishlistCount, setWishlistCount] = useState(0); // Example count
@@ -9,10 +9,10 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile menu state
 
   return (
-    <nav className="bg-white px-6 md:px-20 flex items-center justify-between relative z-50 py-6">
+    <nav className="bg-white px-6 md:px-20 flex items-center justify-between relative z-50 py-10">
       {/* Left Side - Nav Links (Hidden on small screens) */}
       <div className="hidden md:flex gap-6 text-sm font-bold">
-        {["HOME", "SHOP", "CONTACT"].map((item, index) => (
+        {['HOME', 'SHOP', 'CONTACT'].map((item, index) => (
           <Link
             key={index}
             to={`/${item.toLowerCase()}`}
@@ -24,7 +24,7 @@ const Navbar = () => {
       </div>
 
       {/* Middle - Logo (Always Centered) */}
-      <div className="absolute left-1/2 transform -translate-x-1/2 h-20 w-20 md:h-24 md:w-24">
+      <div className="absolute left-1/2 transform -translate-x-1/2 h-40 w-40 md:h-40 md:w-40">
         <img src={logo} alt="Logo" className="object-contain w-full h-full" />
       </div>
 
@@ -71,7 +71,14 @@ const Navbar = () => {
       {/* Mobile Menu (Dropdown) */}
       {isMenuOpen && (
         <div className="absolute top-full left-0 w-full bg-white shadow-md py-4 flex flex-col items-center gap-4 md:hidden">
-          {["HOME", "SHOP", "CONTACT", "LOG IN", "SEARCH", `WISHLIST (${wishlistCount})`].map((item, index) => (
+          {[
+            'HOME',
+            'SHOP',
+            'CONTACT',
+            'LOG IN',
+            'SEARCH',
+            `WISHLIST (${wishlistCount})`,
+          ].map((item, index) => (
             <Link
               key={index}
               to={`/${item.toLowerCase()}`}
