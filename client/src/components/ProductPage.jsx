@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { CiHeart, CiShare2 } from "react-icons/ci";
 import { useDispatch } from "react-redux";
 import { fetchCart } from "../store/cartSlice";
+import { fetchWishlist } from "../store/wishlistSlice";
 const ProductPage = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -12,7 +13,17 @@ const ProductPage = () => {
   const [isLiked, setIsLiked] = useState(false); // State to hold the hover effect
   const dispatch = useDispatch();
   const BASE_URL = "https://nooksandplacesbackend.onrender.com";
+  const [quantity, setQuantity] = useState(1);
 
+  const incrementQty = () => {
+    setQuantity((prev) => prev + 1);
+  };
+
+  const decrementQty = () => {
+    if (quantity > 1) {
+      setQuantity((prev) => prev - 1);
+    }
+  };
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -39,11 +50,10 @@ const ProductPage = () => {
   if (error) return <div>Error: {error}</div>;
   if (!product) return <div>Product not found</div>;
 
-
   const handleAddToCart = async () => {
     const productId = product._id;
     const quantity = 1;
-  
+
     try {
       const response = await fetch(`http://localhost:5000/api/add-to-cart`, {
         method: "POST",
@@ -53,21 +63,22 @@ const ProductPage = () => {
         credentials: "include",
         body: JSON.stringify({ productId, quantity }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         console.log("Product added to cart:", data.cart);
         // ✅ Fetch updated cart data to update quantity in Redux store
         dispatch(fetchCart());
       } else {
+        alert(data.message); 
         console.error("Error adding to cart:", data.message);
       }
     } catch (error) {
       console.error("Add to cart failed:", error);
     }
   };
-  
+
   const handleAddToWishlist = async () => {
     try {
       const response = await fetch("http://localhost:5000/api/wishlist", {
@@ -78,10 +89,11 @@ const ProductPage = () => {
         credentials: "include",
         body: JSON.stringify({ productId: product._id }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
+        dispatch(fetchWishlist());
         console.log("Wishlist updated:", data.message);
         setIsLiked(!isLiked); // toggle like state
       } else {
@@ -91,8 +103,7 @@ const ProductPage = () => {
       console.error("Wishlist request failed:", error);
     }
   };
-  
-  
+
   return (
     <div className="container mx-auto p-6">
       <div className="flex flex-col md:flex-row gap-10">
@@ -115,7 +126,9 @@ const ProductPage = () => {
                   src={imgSrc}
                   alt={`Thumbnail ${index + 1}`}
                   className={`w-24 h-24 object-cover rounded-md cursor-pointer border ${
-                    selectedImage === imgSrc ? "border-black" : "border-gray-300"
+                    selectedImage === imgSrc
+                      ? "border-black"
+                      : "border-gray-300"
                   }`}
                   onClick={() => setSelectedImage(imgSrc)}
                 />
@@ -155,9 +168,13 @@ const ProductPage = () => {
           <div className="mt-6 flex items-center gap-4">
             <p className="text-lg font-medium">Quantity:</p>
             <div className="flex items-center border px-2 py-1 rounded-md">
-              <button className="px-2 text-lg">-</button>
-              <span className="mx-2">1</span>
-              <button className="px-2 text-lg">+</button>
+              <button className="px-2 text-lg" onClick={decrementQty}>
+                -
+              </button>
+              <span className="mx-2">{quantity}</span>
+              <button className="px-2 text-lg" onClick={incrementQty}>
+                +
+              </button>
             </div>
           </div>
 
@@ -167,14 +184,19 @@ const ProductPage = () => {
 
           {/* Icons */}
           <div className="flex items-center gap-7 mt-4">
-            <button onClick={handleAddToCart} className="mt-6 bg-black text-white px-6 py-3 border border-black w-1/2 text-lg transition-all duration-300 ease-in-out hover:text-black hover:bg-white">
+            <button
+              onClick={handleAddToCart}
+              className="mt-6 bg-black text-white px-6 py-3 border border-black w-1/2 text-lg transition-all duration-300 ease-in-out hover:text-black hover:bg-white"
+            >
               ADD TO CART
             </button>
 
             {/* Like Icon */}
             <div
               className={`text-4xl border border-gray-400 rounded-full p-2 mt-3 cursor-pointer transition-all duration-300 ${
-                isLiked ? "bg-black text-white border-black" : "hover:bg-black hover:text-white"
+                isLiked
+                  ? "bg-black text-white border-black"
+                  : "hover:bg-black hover:text-white"
               }`}
               // onClick={() => setIsLiked(!isLiked)}
               onClick={handleAddToWishlist}
