@@ -1,16 +1,14 @@
-// redux/cartSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-// Async thunk to fetch cart
+// Async thunk to fetch total cart quantity
 export const fetchCart = createAsyncThunk('cart/fetchCart', async () => {
-    const res = await fetch('http://localhost:5000/api/cart-quantity', {
-      credentials: 'include',
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Failed to fetch cart');
-    return data.totalQuantity;
+  const res = await fetch('http://localhost:5000/api/countAddedProduct', {
+    credentials: 'include',
   });
-  
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Failed to fetch cart');
+  return data.count; // <-- correct key
+});
 
 const cartSlice = createSlice({
   name: 'cart',
@@ -32,7 +30,6 @@ const cartSlice = createSlice({
       state.totalQuantity = action.payload;
     });
   },
-  
 });
 
 export const { setCart } = cartSlice.actions;

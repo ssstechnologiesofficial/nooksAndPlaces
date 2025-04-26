@@ -65,7 +65,7 @@ const getGuestCartQuantity = async (req, res) => {
     const cart = await GuestCart.findOne({ guestToken });
 
     if (!cart) {
-      return res.status(200).json({ totalQuantity: 0 }); // Empty cart
+      return res.status(200).json({ totalQuantity: 0 }); 
     }
 
     const totalQuantity = cart.items.reduce((acc, item) => acc + item.quantity, 0);
@@ -77,5 +77,30 @@ const getGuestCartQuantity = async (req, res) => {
   }
 };
 
-module.exports = { addToCart, getGuestCartQuantity };
+
+const getGuestCartCount = async (req, res) => {
+  try {
+    const guestToken = req.cookies.guest_token;
+
+    if (!guestToken) {
+      return res.status(400).json({ message: 'Guest token is required' });
+    }
+
+    const guestCart = await GuestCart.findOne({ guestToken });
+
+    if (!guestCart) {
+      return res.status(404).json({ message: 'Guest cart not found' });
+    }
+
+    const productCount = guestCart.items.length; 
+
+    res.status(200).json({ count: productCount });
+  } catch (error) {
+    console.error('Error fetching guest cart count:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+module.exports = { addToCart, getGuestCartQuantity, getGuestCartCount};
 
