@@ -1,13 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaShoppingBag, FaBars, FaTimes } from 'react-icons/fa';
 import logo from '../assets/logo.png';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchCart } from '../store/cartSlice';
+import { fetchWishlist } from '../store/wishlistSlice';
 
 const Navbar = () => {
-  const [wishlistCount, setWishlistCount] = useState(0); // Example count
-  const [cartCount, setCartCount] = useState(0); // Example count
+  // const [wishlistCount, setWishlistCount] = useState(0); 
+  // const [cartCount, setCartCount] = useState(0); // Example count
+  
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile menu state
+  const dispatch = useDispatch();
+  const cartCount = useSelector((state) => state.cart.totalQuantity);
+  // const { items, loading, error } = useSelector((state) => state.wishlist);
+const wishlistCount = useSelector((state) => state.wishlist.items.length); // ✅ THIS
 
+  useEffect(() => {
+    dispatch(fetchWishlist());
+    dispatch(fetchCart());
+  }, [dispatch]);
   return (
     <nav className="bg-white px-6 md:px-20 flex items-center justify-between relative z-50 py-10">
       {/* Left Side - Nav Links (Hidden on small screens) */}

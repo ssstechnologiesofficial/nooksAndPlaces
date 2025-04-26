@@ -11,6 +11,9 @@ const { adminLogin } = require('../controllers/adminController');
 const {  generateOTP, verifyOTP } = require("../controllers/clientControllers/authController");
 const contactController = require("../controllers/contactController");
 const { uploadProduct, uploadMiddleware, getAllProducts, getProductById, updateProduct, deleteProduct } = require('../controllers/ProductController');
+const { createGuestSession } = require('../controllers/createsession');
+const { addToCart, getGuestCartQuantity } = require('../controllers/addToCart');
+const { toggleWishlist, getWishlist } = require('../controllers/toggleWishlist');
 
 const router = express.Router();
 
@@ -58,4 +61,12 @@ router.delete("/user/:id", userController.deleteUser);
 router.post("/user/:id/address", userController.addAddress);
 router.put("/user/:userId/address/:addressId", userController.updateAddress);
 router.delete("/user/:userId/address/:addressId", userController.deleteAddress);
+
+// session 
+router.get("/create-session", createGuestSession);
+// add to cart 
+router.post('/add-to-cart', addToCart);
+router.get('/cart-quantity', getGuestCartQuantity);
+router.post('/wishlist', toggleWishlist);
+router.get('/get-wishlist', getWishlist);
 module.exports = router;

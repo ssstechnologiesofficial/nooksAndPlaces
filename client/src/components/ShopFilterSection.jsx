@@ -42,7 +42,10 @@ const ShopFilterSection = () => {
           >
             {categories.length > 0 ? (
               categories.map((category) => (
-                <label key={category._id} className="flex items-center space-x-2">
+                <label
+                  key={category._id}
+                  className="flex items-center space-x-2"
+                >
                   <input type="checkbox" className="accent-green-600" />
                   <span>{category.title}</span>
                 </label>

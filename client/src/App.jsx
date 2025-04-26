@@ -6,11 +6,13 @@ import Navbar from "./components/Navbar";
 import LoggedInNavbar from "./components/LoggedInNavbar"; 
 import Footer from "./components/Footer";
 import LoggedInFooter from "./components/LoggedInFooter"; // Fixed import
+import useGuestSession from "./hooks/useGuestSession";
 
 const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
+  useGuestSession();
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedUser = JSON.parse(localStorage.getItem("user"));
