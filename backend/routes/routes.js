@@ -70,5 +70,4 @@ router.get('/cart-quantity', getGuestCartQuantity);
 router.post('/wishlist', toggleWishlist);
 router.get('/get-wishlist', getWishlist);
 router.get('/countAddedProduct', getGuestCartCount);
-
 module.exports = router;

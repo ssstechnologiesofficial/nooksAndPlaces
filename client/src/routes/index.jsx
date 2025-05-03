@@ -10,6 +10,7 @@ import OrderPage from '../components/OrderPage';
 import ProfilePage from '../components/ProfilePage';
 import Settings from '../components/Settings';
 import ProductPage from '../components/ProductPage';
+import Products from '../components/productDetails/Products';
 
 
 
@@ -58,7 +59,7 @@ export const router = createBrowserRouter([
         element: <Settings/>},
         {
         path: '/product/:id',
-        element: <ProductPage/>
+        element: <Products/>
       },
     ],
   },
