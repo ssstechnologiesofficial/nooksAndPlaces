@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import SummaryApi from "../common/SummaryApi";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
 
   // Fetch categories from API
   useEffect(() => {
-    fetch("https://nooksandplacesbackend.onrender.com/api/getCategories") // Update API URL as per your backend
+    fetch(SummaryApi.getCategories.url) // Update API URL as per your backend
       .then((res) => res.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));

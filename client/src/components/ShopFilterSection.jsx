@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaChevronDown } from "react-icons/fa";
+import SummaryApi from "../common/SummaryApi";
 
 const ShopFilterSection = () => {
   const [categoryOpen, setCategoryOpen] = useState(false);
@@ -10,7 +11,7 @@ const ShopFilterSection = () => {
 
   // Fetch categories from API
   useEffect(() => {
-    fetch("https://nooksandplacesbackend.onrender.com/api/getCategories") // Update API URL if needed
+    fetch(SummaryApi.getCategories.url) // Update API URL if needed
       .then((res) => res.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));

@@ -7,14 +7,10 @@ import { fetchCart } from '../store/cartSlice';
 import { fetchWishlist } from '../store/wishlistSlice';
 
 const Navbar = () => {
-  // const [wishlistCount, setWishlistCount] = useState(0); 
-  // const [cartCount, setCartCount] = useState(0); // Example count
-  
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile menu state
   const dispatch = useDispatch();
   const cartCount = useSelector((state) => state.cart.totalQuantity);
-  // const { items, loading, error } = useSelector((state) => state.wishlist);
-const wishlistCount = useSelector((state) => state.wishlist.items.length); // ✅ THIS
+const wishlistCount = useSelector((state) => state.wishlist.items?.length || 0); 
 
   useEffect(() => {
     dispatch(fetchWishlist());

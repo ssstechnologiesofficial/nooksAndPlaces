@@ -1,8 +1,9 @@
 // store/wishlistSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import SummaryApi from '../common/SummaryApi';
 
 export const fetchWishlist = createAsyncThunk('wishlist/fetchWishlist', async () => {
-  const response = await fetch('http://localhost:5000/api/get-wishlist', {
+  const response = await fetch(SummaryApi.getWishlist.url, {
     credentials: 'include',
   });
   const data = await response.json();

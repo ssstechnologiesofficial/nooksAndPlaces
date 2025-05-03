@@ -12,7 +12,7 @@ const {  generateOTP, verifyOTP } = require("../controllers/clientControllers/au
 const contactController = require("../controllers/contactController");
 const { uploadProduct, uploadMiddleware, getAllProducts, getProductById, updateProduct, deleteProduct } = require('../controllers/ProductController');
 const { createGuestSession } = require('../controllers/createsession');
-const { addToCart, getGuestCartQuantity } = require('../controllers/addToCart');
+const { addToCart, getGuestCartQuantity, getGuestCartCount } = require('../controllers/addToCart');
 const { toggleWishlist, getWishlist } = require('../controllers/toggleWishlist');
 
 const router = express.Router();
@@ -69,4 +69,6 @@ router.post('/add-to-cart', addToCart);
 router.get('/cart-quantity', getGuestCartQuantity);
 router.post('/wishlist', toggleWishlist);
 router.get('/get-wishlist', getWishlist);
+router.get('/countAddedProduct', getGuestCartCount);
+
 module.exports = router;

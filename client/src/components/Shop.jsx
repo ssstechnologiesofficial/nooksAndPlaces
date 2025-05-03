@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ShopFilterSection from "./ShopFilterSection";
 import { Link } from "react-router-dom";
+import SummaryApi from "../common/SummaryApi";
 
 const Shop = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -13,7 +14,7 @@ const Shop = () => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          "https://nooksandplacesbackend.onrender.com/api/getproducts"
+          SummaryApi.getProduct.url
         ); // Replace with your API URL
         if (!response.ok) {
           throw new Error("Failed to fetch products");

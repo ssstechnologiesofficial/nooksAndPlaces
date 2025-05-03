@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
 
 app.use(
   cors({
-    origin: 'http://localhost:5173', // Allow all origins (for testing, later restrict it)
+    origin: 'http://localhost:5174', // Allow all origins (for testing, later restrict it)
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
